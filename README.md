@@ -6,6 +6,10 @@ Built to strictly fulfill all requirements specified in the project assessment d
 
 ---
 
+## 🌐 Live Production URL
+👉 **[https://frontend-liard-seven-twn895nurf.vercel.app](https://frontend-liard-seven-twn895nurf.vercel.app)**
+*(Live on Vercel)*
+
 ## 🌟 Key Features
 
 ### 1. 🔐 User Authentication & Authorization
