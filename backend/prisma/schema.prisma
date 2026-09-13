@@ -1,0 +1,77 @@
+// Prisma schema for Project Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  fullName  String
+  email     String     @unique
+  password  String
+  role      String     @default("USER") // USER, ADMIN
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  projects  Project[]
+  tasks     Task[]
+  auditLogs AuditLog[]
+
+  @@index([email])
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  status      String    @default("Not Started") // "Not Started", "In Progress", "Completed"
+  startDate   DateTime?
+  endDate     DateTime?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks       Task[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  priority    String    @default("Medium") // "Low", "Medium", "High"
+  status      String    @default("Pending") // "Pending", "In Progress", "Completed"
+  dueDate     DateTime?
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([status])
+  @@index([priority])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action     String
+  entityType String
+  entityId   String?
+  details    String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}
