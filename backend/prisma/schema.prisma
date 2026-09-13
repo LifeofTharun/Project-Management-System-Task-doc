@@ -1,11 +1,11 @@
-// Prisma schema for Project Management System
+// Prisma schema for Project Management System (Connected to Cloud PostgreSQL Database)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
